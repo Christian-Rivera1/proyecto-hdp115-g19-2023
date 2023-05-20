@@ -1,32 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-</head>
-<body>
-   
-
-<div class="collapse" id="navbarToggleExternalContent">
-    <div class="bg-dark p-4">
-      <h6 class="text-white h4">Estadistica de Poblacion con Discapacidad</h6>
-      <h5 class="text-white h4">Empresas que contratan con personas con Discapacidad</h5>
-      <h5 class="text-white h4">Estadistica de Poblacion</h5>
-      <span class="text-body-secondary">Toggleable via the navbar brand.</span>
+{% extends "base.html" %}
+{% load  static %}
+{% block content %}
+<!--ComboBox------------------------------->
+<header>
+  <div class="container-fluid py-5 text-center">
+    <h1>Estadística poblacional</h1>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <select id="dataSelect" name="dataSelect" class="form-select combo-box" aria-label="Selecciona una opción" >
+          <option selected>Selecciona una opción</option> 
+          <option value="1">Opción 1</option>
+          <option value="2">Opción 2</option>
+          <option value="3">Opción 3</option>
+        </select>
+      </div>
     </div>
   </div>
-  <nav class="navbar navbar-dark bg-dark">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+</header>
+<!------------------------------------------------------------------->
+<!--------------------------------Contenedor del Grafico-------------------------->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <div id="container">
+
+        </div>
+      </div>
     </div>
-  </nav>
+  </div>
+<!---------------------------------------------------------------------->
+<!-------------Script de Grafico---------------->
+  <body>
+    <script>
+      var datos = '{{ datos|safe }}';
+      var datosjson = JSON.parse(datos);
+      console.log(datosjson.data1);
+
+      var options = {
+      chart: {
+        type: 'pie'
+      },
+      series: [{
+        name: 'Frutas',
+        data: datosjson.data1
+      }],
+
+      title: {
+        text: 'Frutas'
+      }
+    }
+    
+    // crea el gráfico
+    var chart = Highcharts.chart('container', options);
   
-  
-    <script src="/static/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    
+    // función para actualizar el gráfico
+    function updateChart() {
+      var selectedOption = document.getElementById('dataSelect').value;
+      
+      // actualiza los datos del gráfico según la opción seleccionada
+      /*if (selectedOption === '1') {
+        chart.series[0].setData(data1);
+      } else if (selectedOption === '2') {
+        chart.series[0].setData(data2);
+      } else if (selectedOption === '3') {
+        chart.series[0].setData(data3);
+      }*/
+
+      
+
+      switch (selectedOption) {
+        case '1':
+          chart.series[0].setData(datosjson.data1);
+          break;
+        case '2':
+          chart.series[0].setData(datosjson.data2);
+          break;
+        case '3':
+          chart.series[0].setData(datosjson.data3);
+          break;
+      }
+
+    }
+    
+    // ejecuta la función updateChart cada vez que se cambia la opción seleccionada
+    document.getElementById('dataSelect').addEventListener('change', updateChart);
+
+
+    </script>
+  </body>
+ <!----------------------------------------------------------------> 
+   
+{% endblock %}
+
