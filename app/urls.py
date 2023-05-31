@@ -9,6 +9,7 @@ urlpatterns = [
     path('discapacidad/', views.discapacidad, name='discapacidad'),
     path('empresas/', views.empresas, name='empresas'),
     path('login/', views.login, name='login'),
+    path('tabla/',views.tabla, name='tabla')
     #path("", views.index, name="index"),
     #path("graficos/grafico1", views.grafico1, name="grafico1"),
     #path("graficos/grafico2", views.grafico2, name="grafico2"),

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load  static %}
+
+{% block content %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>id Estadística</th>
+            <th>Nombre Estadistca</th>
+        </tr>
+    </thead>
+    <tbody id="cuerpo-tabla">
+    </tbody></table>
+<script>
+    let datos = JSON.parse('{{ est|safe }}');
+    let cuerpoTabla = document.getElementById('cuerpo-tabla');
+    for (var clave in datos) {
+        let fila = document.createElement('tr');
+        let celdaID = document.createElement('td');
+        celdaID.textContent = datos[clave].id_estadistica;
+        fila.appendChild(celdaID);
+        let celdaValor = document.createElement('td');
+        celdaValor.textContent = datos[clave].nom_estadistica;
+        fila.appendChild(celdaValor);
+        cuerpoTabla.appendChild(fila);
+    }</script>
+{% endblock %}
+

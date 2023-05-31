@@ -2,9 +2,103 @@
 {% load  static %}
 {% block content %}
 <h3>Estoy en Personas Con Discapacidad</h3>
+<!--ComboBox------------------------------->
+<header>
+    <div class="container-fluid py-5 text-center">
+      <h1>Estadística poblacional</h1>
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <select id="dataSelect" name="dataSelect" class="form-select combo-box" aria-label="Selecciona una opción" >
+            <option selected>Selecciona una opción</option> 
+            <option value="1">Opción 1</option>
+            <option value="2">Opción 2</option>
+            <option value="3">Opción 3</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!------------------------------------------------------------------->
+  <!--------------------------------Contenedor del Grafico-------------------------->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          <div id="container">
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  <!---------------------------------------------------------------------->
+
+
     <script>
-        /*var datos = '{{ datos|safe }}';
-        var datosjson = JSON.parse(datos);*/
-        console.log('{{datos}}')
+       /* var querysetData = JSON.parse('{{ queryset_json|escapejs }}');
+
+     
+
+        for (var i = 0; i < querysetData.length; i++) {
+        var obj = querysetData[i];
+        console.log(obj.nombre_estadistica);  
+        } 
+    */
+    //window.data = { args: '{{ est|safe }}'}
+    let data = JSON.parse('{{ est|safe }}');
+    console.log(data.estadistica0)
+    var options = {
+      chart: {
+        type: 'pie'
+      },
+      series: [{
+        name: data.estadistica0.nombre_serie,
+        data: data.estadistica0.datos_serie
+      }],
+
+      title: {
+        text: data.estadistica0.nom_estadistica
+      }
+    }
+    
+    // crea el gráfico
+    var chart = Highcharts.chart('container', options);
+  
+    
+    // función para actualizar el gráfico
+    function updateChart() {
+      var selectedOption = document.getElementById('dataSelect').value;
+      
+      // actualiza los datos del gráfico según la opción seleccionada
+      /*if (selectedOption === '1') {
+        chart.series[0].setData(data1);
+      } else if (selectedOption === '2') {
+        chart.series[0].setData(data2);
+      } else if (selectedOption === '3') {
+        chart.series[0].setData(data3);
+      }*/
+
+      chart.series[0].setData([]);
+      
+
+      switch (selectedOption) {
+        case '1':
+          chart.series[0].setData(datosjson.data1);
+          break;
+        case '2':
+          chart.series[0].setData(datosjson.data2);
+          break;
+        case '3':
+          chart.series[0].setData(datosjson.data3);
+          break;
+      }
+
+    }
+    
+    // ejecuta la función updateChart cada vez que se cambia la opción seleccionada
+    document.getElementById('dataSelect').addEventListener('change', updateChart);
+    /*for (var i = 0; i < data.length; i++) {
+        var obj = data[i];
+        console.log(obj.nombre_estadistica);  
+        } */ 
+    //console.log(data.nombre_estadistica);
     </script>
 {% endblock %}

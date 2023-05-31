@@ -1,0 +1,99 @@
+Comandos
+Git----------------------------------------------------------------------
+configurar Usuario de Git
+
+git config --global user.name "nombreDeUsuario"
+
+git config --global user.email "correoelectronico"
+
+Inicializar el repositorio de git
+colocarse en la directorio del proyecto en la consola y digitar el siguiente comando
+git init
+
+git status : para ver los archivos que no han sido agregados al repositorio de git
+
+git add . : para agregar todos los archivos al repositorio de git         git add y git commit cada vez que se desea guardar cambios
+
+git commit -m "Mensaje que indica el cambio realizado" : para guardar cambios
+
+git log : mirar el historia de commits
+
+git checkout {codigodelcommit} : para volver a un commit en especifico
+
+git branch : ver las ramas del repositorio
+
+git switch {nombreDeLaRama} : para cambiarse de rama
+
+git switch -c "nombreRama" : para crear una nueva rama
+
+
+Reposorio Remoto
+
+1) Loguearse en GitHub
+
+2) Crear Un Nuevo Repositorio
+
+3) Luego en la linea de comandos en la ruta del proyecto ejecutar el siguiente comando
+
+git remote add origin {link del repositorio remoto}
+
+4)
+
+git push origin master : para subir los archivos del proyecto
+
+
+git push --set-upstream origin main 
+
+Python--------------------------------------------------------------------
+cd env/
+source bin/activate
+
+
+christian
+christianadonayriveralopez@gmail.com
+12345
+
+python manage.py createsuperuser
+
+
+
+Django---------------------------------------------------------------------
+crear Proyecto en Django
+colocar se en la ruta donde se almacenaran los proyectos de django y ejectar el siguente comando
+
+django-admin startproject {nombreDelProyecto}
+
+python manage.py migrate : hacer de migracion de tablas que utiliza Django por defecto para los proyectos
+
+python manage.py runserver : para ejecutar el servidor de pruebas que trae por defecto django
+
+python manage.py startapp {nombre}
+
+	'ENGINE': 'django.db.backends.postgresql_spycopg2',
+        'NAME': 'appdiscapacitados',
+	'USER': 'usuarioapp',
+	'PASSWORD': '12345',
+	'HOST': 'localhost',
+	'PORT': 5432
+
+Postgresql----------------------------------------------------------------------------------
+https://www.librebyte.net/base-de-datos/comandos-para-administrar-postgres/
+https://es.stackoverflow.com/questions/590413/fall%C3%B3-la-conexi%C3%B3n-al-servidor-en-localhost-1-puerto-5432-fatal-para-pgad
+
+/usr/pgsql-11/bin/postgresql-11-setup initdb
+sudo -u potsgres psql
+systemctl enable postgresql-11.service
+systemctl start postgresql-11.service
+systemctl status postgresql-11
+
+Usuario db
+name: usuarioapp
+password: 12345
+
+/var/lib/pgsql/11/data
+
+CREATE DATABASE appdiscapacitados OWNER postgres ;
+CREATE USER usuarioapp WITH PASSWORD '12345';
+ALTER USER usuarioapp WITH SUPERUSER;
+GRANT ALL PRIVILEGES ON database appdiscapacitados TO usuarioapp;
+
