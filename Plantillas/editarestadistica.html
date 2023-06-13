@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load  static %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="card ">
+  <div class="card-header d-flex justify-content-center align-items-center" >
+    Bienvenido {{ user.username | upper }} 
+  </div>
+</div>
+
+<br>
+
+{% endif %}
+<body>
+  <div class="d-flex justify-content-center align-items-center vh-100" >
+      <div
+      class=" rounded-5 text-secondary "
+      style="width: 75rem;"
+      >
+                <div class="card">
+                    <div class="card-header">
+                      Estadisticas
+                    </div>
+                      <div class="card-body">
+                        
+                                          <div class="table-responsive">
+                                                <table class="table table-striped
+                                                  table-hover	
+                                                  table-borderless
+                                                  table-primary
+                                                  align-middle">
+                                                      <thead class="table-light">
+
+                                                          <tr>
+                                                              <th>ID</th>
+                                                              <th>Tipo</th>
+                                                              <th>Nombre</th>
+                                                              <th>Descripcion</th>
+                                                              
+                                                              <th>Opcion</th>
+                                                          </tr>
+                                                      </thead>
+                                                        <tbody class="table-group-divider" id="cuerpo-tabla">
+                                                  
+                                                        </tbody>
+                                                </table>  
+                                          </div>
+
+                      </div>
+              </div>
+            </div>          
+  </div>
+</body>
+
+
+
+
+<script>
+  let datos = JSON.parse('{{ est|safe }}');
+  console.log(datos);
+  let cuerpoTabla = document.getElementById('cuerpo-tabla');
+  for (var clave in datos) {
+      let fila = document.createElement('tr');
+      fila.setAttribute('class', 'table-light');
+      let celdaID = document.createElement('td');
+      celdaID.setAttribute('scope', 'row');
+      celdaID.textContent = datos[clave].id_estadistica;
+      fila.appendChild(celdaID);
+      let celdaTipo = document.createElement('td');
+      celdaTipo.textContent = datos[clave].id_tipo_estadistica__nom_tipo_estadistica;
+      fila.appendChild(celdaTipo);
+      let celdaNomEst= document.createElement('td');
+      celdaNomEst.textContent = datos[clave].nombre_estadistica;
+      fila.appendChild(celdaNomEst);
+      let celdaDescrip = document.createElement('td');
+      celdaDescrip.textContent = datos[clave].descripcion;
+      fila.appendChild(celdaDescrip);
+      let celdaboton = document.createElement('td');
+      let boton = document.createElement('a');
+      boton.textContent = 'Editar'; 
+      boton.setAttribute('class', 'btn btn-success');
+      boton.setAttribute('href', `{% url 'app:edit' %}?id=${celdaID.textContent}`);
+      boton.setAttribute('role', 'button');
+      celdaboton.appendChild(boton);
+      fila.appendChild(celdaboton);
+      cuerpoTabla.appendChild(fila);
+  }</script>
+
+
+{% endblock %}

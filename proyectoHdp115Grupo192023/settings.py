@@ -29,6 +29,9 @@ DEBUG = True
 STATIC_URL = True
 ALLOWED_HOSTS = []
 
+#LOGIN_URL = 'app/login/'
+
+
 
 # Application definition
 
@@ -78,7 +81,7 @@ WSGI_APPLICATION = 'proyectoHdp115Grupo192023.wsgi.application'
 
 DATABASES = {
     'default': {
-	'ENGINE': 'django.db.backends.postgresql',
+	'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'appdiscapacitados',
 	'USER': 'postgres',
 	'PASSWORD': '',
@@ -132,3 +135,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'editest'
+LOGOUT_REDIRECT_URL = 'index'

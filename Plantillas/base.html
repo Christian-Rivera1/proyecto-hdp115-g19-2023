@@ -4,21 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>App</title>
+    <link rel="icon" href="/static/img/logo.svg" type="image/svg">
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
 
     <style>
       /* Estilos adicionales */
-      html,body {
-        height: 100%;
-      }
+
       body {
-        background-image: linear-gradient(to bottom, #5DA770, #635094);
-        color: white;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+        background: linear-gradient( #31608b, #9bc1bc);
+        
+        /*color: white;*/
+       /*margin: 0; 
+        padding: 0; 
+        box-sizing: border-box; 
         font-family: sans-serif;
+        background-repeat: no-repeat;
+        background-size: cover; */
          
       }
       .header {
@@ -46,7 +48,15 @@
 <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Icono</a>
+      <div class="d-flex justify-content-center ">
+        <a class="nav-link" href="{% url 'app:index' %}">
+          <img
+          src="/static/img/logo.svg"
+          alt="login-icon"
+          style="height: 3rem"
+        />
+        </a>   
+      </div>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -60,13 +70,43 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'app:empresas' %}">Empresas</a>
           </li>
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'app:editest' %}">Editar Estadisticas</a>
+          </li>
         </ul>
+        {% endif %}
+        {% if request.user.is_authenticated %}
         <ul class="nav justify-content-center  ">
-            <li class="nav-item">
-                <a class="nav-link active" href="{% url 'app:login' %}" aria-current="page">Login</a>
-            </li>
+          <li class="nav-item">
+              <a class="nav-link active" aria-current="page">
+                <img src="/static/img/login-icon.svg" alt="" style="height: 2rem">
+                {{ user.username | upper }}
+              </a>
+          </li>
+          {% else %}
+          <li>
         </ul>
         
+        <ul class="nav justify-content-center  ">
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'app:editest' %}" aria-current="page">
+                  <img src="/static/img/login-icon.svg" alt="" style="height: 2rem">
+                  Login
+                </a>
+            </li>
+
+          {% endif %}
+            <li>
+       
+              {% if request.user.is_authenticated %}
+             
+              <a href="{% url 'app:exit' %}" class="nav-link active" aria-current="page">
+                <img src="/static/img/Closse.svg" alt="Close" style=" height: 2rem;">
+                Salir</a>
+              {% endif %}
+            </li>
+        </ul>
       </div>
     </div>
   </nav>
@@ -77,6 +117,12 @@
  {% block content %}
 
   <!--Aqui va el Contenido-->
+  <footer>
+    <p>
+      Derechos Reservados
+    </p>
+   
+  </footer>
    
 {% endblock %}
 </body>

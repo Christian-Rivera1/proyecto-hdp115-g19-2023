@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load  static %}
+{% block content %}
+
+<body class="bg-info">
+  <div class="d-flex justify-content-center align-items-center " >
+    <div
+    class="p-3 rounded-5 text-secondary "
+    style="width: 45rem; height: 50rem;"
+  >
+<div class="card">
+  <div class="card-header">
+    Editar empresas
+  </div>
+  <div class="card-body"> 
+    
+    <a name="" id="" class="btn btn-info" href="{% url 'app:editarpoblacion' %}" role="button">Regresar</a>
+    
+    <form class="row-10px g-3">
+
+      <div class="row mb-3">
+        <label for="inputText" class="col-sm-3 col-form-label">ID</label>
+        <div class="col-sm-6">
+          <input type="text" id="id" name="id"    class="form-control" placeholder="id">
+        </div>
+    </div>
+
+
+    <div class="row mb-3">
+      <label for="inputText" class="col-sm-3 col-form-label">Nombre</label>
+      <div class="col-sm-6">
+        <input type="text" id="nombre" name="nombre"    class="form-control" placeholder="nombre">
+      </div>
+  </div>
+
+
+<div class="row mb-3">
+  <label for="inputText" class="col-sm-3 col-form-label">Cantidad</label>
+  <div class="col-sm-6">
+    <input type="text" id="cantidad" name="cantidad"    class="form-control" placeholder="cantidad">
+  </div>
+</div>
+
+    </form>
+  <div class="d-grid gap-2 col-6 mx-auto">
+    <button class="btn btn-success" type="button">Guardar</button>
+    <!--<button class="btn btn-danger" type="button">Limpiar</button>-->
+  </div>
+  <div class="card-footer text-muted">
+  </div>
+</div>
+</div>
+</body>
+
+
+{% endblock %}

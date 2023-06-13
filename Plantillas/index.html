@@ -5,13 +5,14 @@
 <header>
   <div class="container-fluid py-5 text-center">
     <h1>Estadística poblacional</h1>
+    <br>
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <select id="dataSelect" name="dataSelect" class="form-select combo-box" aria-label="Selecciona una opción" >
-          <option selected>Selecciona una opción</option> 
-          <option value="1">Opción 1</option>
-          <option value="2">Opción 2</option>
-          <option value="3">Opción 3</option>
+        <select id="dataSelect" name="dataSelect" class="form-select combo-box" aria-label="Selecciona una opción" style="text-align: center;" >
+  
+          <option value="1">{{ contex1.est1.estadistica0.nom_estadistica }}</option>
+          <option value="2">{{ contex1.est1.estadistica1.nom_estadistica }}</option>
+          <option value="3">{{ contex1.est1.estadistica2.nom_estadistica }}</option>
         </select>
       </div>
     </div>
@@ -32,64 +33,242 @@
 <!-------------Script de Grafico---------------->
   <body>
     <script>
-      var datos = '{{ datos|safe }}';
-      var datosjson = JSON.parse(datos);
-      console.log(datosjson.data1);
-
+      let data = JSON.parse('{{ contex2.est2|safe }}');
+      console.log(data.estadistica0)
+      console.log(data.estadistica2.datos_serie.leyendas_compuestas)
       var options = {
-      chart: {
-        type: 'pie'
-      },
-      series: [{
-        name: 'Frutas',
-        data: datosjson.data1
-      }],
-
-      title: {
-        text: 'Frutas'
-      }
-    }
-    
-    // crea el gráfico
-    var chart = Highcharts.chart('container', options);
+        chart: {
+          type: 'pie',
+        },
+        series: [{
+          name: data.estadistica0.nombre_serie,
+          data: data.estadistica0.datos_serie
+        },{
+          name: '',
+          data: []
+        }
+      ],
   
-    
-    // función para actualizar el gráfico
-    function updateChart() {
-      var selectedOption = document.getElementById('dataSelect').value;
-      
-      // actualiza los datos del gráfico según la opción seleccionada
-      /*if (selectedOption === '1') {
-        chart.series[0].setData(data1);
-      } else if (selectedOption === '2') {
-        chart.series[0].setData(data2);
-      } else if (selectedOption === '3') {
-        chart.series[0].setData(data3);
-      }*/
+        title: {
+          text: data.estadistica0.nom_estadistica
+        },
+  
+        plotOptions: {
+          pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                  enabled: true,
+                  format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+              }
+          }
+        },
+      };
 
-      chart.series[0].setData([]);
+      var options2 = {
+
+        chart: {
+          type: 'column',
+        },
+        title: {
+            text: data.estadistica2.nombre_serie
+        },
+        xAxis: {
+            categories: data.estadistica2.datos_serie.leyendas_compuestas,
+            visible: true,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Población'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        }
+
+      };
+      
+      // crea el gráfico
+      var chart = Highcharts.chart('container', options);
       
 
-      switch (selectedOption) {
-        case '1':
-          chart.series[0].setData(datosjson.data1);
-          break;
-        case '2':
-          chart.series[0].setData(datosjson.data2);
-          break;
-        case '3':
-          chart.series[0].setData(datosjson.data3);
-          break;
+      // función para actualizar el gráfico
+      function updateChart() {
+
+        console.log(data.estadistica2.datos_serie.leyendas_simples[1]);
+
+        console.log(data.estadistica2.datos_serie.valores_m);
+
+        console.log(data.estadistica2.datos_serie.leyendas_simples[0]);
+
+        console.log(data.estadistica2.datos_serie.valores_h);
+
+          var selectedOption = document.getElementById('dataSelect').value;
+        
+          chart.series[0].setData([]);
+          switch (selectedOption) {
+            case '1':
+
+              chart.update({
+                chart: {
+                    type: 'pie'
+                },
+
+                xAxis: {
+                    categories: null,
+                    crosshair: false,
+                    visible: false
+                },
+
+                yAxis: {
+                    min: null,
+                    title: {
+                        text: null
+                    }
+                },
+                tooltip: {
+                    headerFormat: null,
+                    pointFormat: null,
+                    footerFormat: null,
+                    shared: false,
+                    useHTML: false
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: null,
+                        borderWidth: null
+                    },
+                    pie: {
+                      allowPointSelect: true,
+                      cursor: 'pointer',
+                      dataLabels: {
+                          enabled: true,
+                          format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                      }
+          }
+                },
+
+                series: [{
+                  name: data.estadistica0.nombre_serie,
+                  data: data.estadistica0.datos_serie
+                },
+                {
+                  name: '',
+                  data: []
+                }
+              ],
+
+                title:{
+                  text: data.estadistica0.nom_estadistica
+                }
+               });
+              chart.redraw();
+              break;
+            case '2':
+              chart.update({
+                chart: {
+                    type: 'pie'
+                },
+                xAxis: {
+                    categories: null,
+                    crosshair: false,
+                    visible: false
+                },
+                yAxis: {
+                    min: null,
+                    title: {
+                        text: null
+                    }
+                },
+
+                tooltip: {
+                    headerFormat: null,
+                    pointFormat: null,
+                    footerFormat: null,
+                    shared: false,
+                    useHTML: false
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: null,
+                        borderWidth: null
+                    },
+                    pie: {
+                      allowPointSelect: true,
+                      cursor: 'pointer',
+                      dataLabels: {
+                          enabled: true,
+                          format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                      }
+                   },  
+                },
+                series: [{
+                  name: data.estadistica1.nombre_serie,
+                  data: data.estadistica1.datos_serie
+                },{
+                  name: '',
+                  data: []
+                }],
+
+                title:{
+                  text: data.estadistica1.nom_estadistica
+                }
+                  
+                });
+                chart.redraw();
+                break;
+            case '3':
+              console.log(data.estadistica2.datos_serie.valores_h)
+              chart.series[0].setData([]);
+              chart.update({
+                chart: {
+                    type: 'column'
+                },
+
+                xAxis: {
+                    categories: data.estadistica2.datos_serie.leyendas_compuestas,
+                    crosshair: true,
+                    visible: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Poblacion'
+                    }
+                },
+
+                title:{
+                  text: data.estadistica2.nom_estadistica
+                }
+
+             }); 
+             chart.series[0].update({name: 'Mujeres', data: data.estadistica2.datos_serie.valores_m});
+             chart.series[1].update({name: 'Hombres', data: data.estadistica2.datos_serie.valores_h});
+
+               break;
+              
+          }
+
       }
 
-    }
-    
-    // ejecuta la función updateChart cada vez que se cambia la opción seleccionada
-    document.getElementById('dataSelect').addEventListener('change', updateChart);
+      // ejecuta la función updateChart cada vez que se cambia la opción seleccionada
+      document.getElementById('dataSelect').addEventListener('change', updateChart);
 
+      </script>
 
-    </script>
-<script> </script>
   </body>
  <!----------------------------------------------------------------> 
    

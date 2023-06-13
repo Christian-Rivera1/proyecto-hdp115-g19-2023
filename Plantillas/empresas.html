@@ -1,5 +1,202 @@
 {% extends "base.html" %}
 {% load  static %}
 {% block content %}
-<h3>Estoy en Empresas</h3>
+
+<!--ComboBox------------------------------->
+<header>
+    <div class="container-fluid py-5 text-center">
+      <h1>Empresas que Contratan a Personas Con Discapacidad</h1>
+      <br>
+      <div class="row justify-content-center" style="align-content: center;">
+        <div class="col-md-6">
+          <select id="dataSelect" name="dataSelect" class="form-select combo-box" aria-label="Selecciona una opción" style="text-align: center;">
+    
+            <option value="1">{{ contex1.est1.estadistica0.nom_estadistica }}</option>
+            <option value="2">{{ contex1.est1.estadistica1.nom_estadistica }}</option>
+            <option value="3">{{ contex1.est1.estadistica2.nom_estadistica }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!------------------------------------------------------------------->
+
+  <!--------------------------------Contenedor del Grafico-------------------------->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          <div id="container">
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  <!---------------------------------------------------------------------->
+  <!--SCRIPT DEL GRAFICO------------------------------------------------>
+  <script>
+    let data = JSON.parse('{{ contex2.est2|safe }}');
+    console.log(data.estadistica0)
+      console.log(data.estadistica2.datos_serie.leyendas_compuestas)
+    
+      var options = {
+
+        chart: {
+          type: 'column',
+        },
+        title: {
+            text: data.estadistica0.nombre_serie
+        },
+        xAxis: {
+            categories: data.estadistica0.datos_serie.leyendas_compuestas,
+            visible: true,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Población'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+                    name: 'Hombres', 
+                    data: data.estadistica0.datos_serie.valores_h
+                },
+                {
+                    name: 'Mujeres', 
+                    data: data.estadistica0.datos_serie.valores_m
+                   
+                },
+                {
+                    name: 'Total', 
+                    data: data.estadistica0.datos_serie.valores_t
+                }
+              ],
+
+      };
+      
+      // crea el gráfico
+      var chart = Highcharts.chart('container', options);
+      
+
+      function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+      // función para actualizar el gráfico
+      function updateChart() {
+
+          var selectedOption = document.getElementById('dataSelect').value;
+        
+          chart.series[0].setData([]);
+          switch (selectedOption) {
+            case '1':
+                chart.series[0].setData([]);
+                chart.update({
+                    chart: {
+                        type: 'column'
+                    },
+
+                    xAxis: {
+                        categories: data.estadistica0.datos_serie.leyendas_compuestas,
+                        crosshair: true,
+                        visible: true
+                    },
+
+                    title:{
+                    text: data.estadistica0.nom_estadistica
+                    }
+
+                }); 
+                chart.series[0].update({name: 'Mujeres', data: data.estadistica0.datos_serie.valores_m});
+                chart.series[1].update({name: 'Hombres', data: data.estadistica0.datos_serie.valores_h, visible: true, showInLegend: true});
+                chart.series[2].update({name: 'Total', data: data.estadistica0.datos_serie.valores_t, visible: true, showInLegend: true});
+                
+                chart.redraw();
+              break;
+            case '2':
+            chart.series[0].setData([]);
+              chart.update({
+                chart: {
+                    type: 'column'
+                },
+
+                xAxis: {
+                    categories: data.estadistica1.datos_serie.leyendas_compuestas,
+                    crosshair: true,
+                    visible: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Poblacion'
+                    }
+                },
+
+                title:{
+                  text: data.estadistica1.nom_estadistica
+                }
+
+             }); 
+             chart.series[0].update({name: 'Mujeres', data: data.estadistica1.datos_serie.valores_m});
+             chart.series[1].update({name: 'Hombres', data: data.estadistica1.datos_serie.valores_h, visible: true, showInLegend: true});
+             chart.series[2].update({name: 'Total', data: data.estadistica1.datos_serie.valores_t,  visible: true, showInLegend: true});
+                break;
+            case '3':
+              chart.series[0].setData([]);
+              chart.update({
+                chart: {
+                    type: 'column'
+                },
+                colorByPoint: true,
+                xAxis: {
+                    categories: data.estadistica2.datos_serie.categorias,
+                    crosshair: true,
+                    visible: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Poblacion'
+                    }
+                },
+
+                title:{
+                  text: data.estadistica2.nom_estadistica
+                }
+
+             }); 
+             chart.series[0].update({name: data.estadistica2.nombre_serie, data: data.estadistica2.datos_serie.datos, color: getRandomColor()});
+             chart.series[1].update({name: '', data: [], visible: false, showInLegend: false});
+             chart.series[2].update({name: '', data:[], visible: false, showInLegend: false});
+
+               break;
+              
+          }
+
+      }
+
+      // ejecuta la función updateChart cada vez que se cambia la opción seleccionada
+      document.getElementById('dataSelect').addEventListener('change', updateChart);
+
+    </script>
+
 {% endblock %}

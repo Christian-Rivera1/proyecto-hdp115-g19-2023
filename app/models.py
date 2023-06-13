@@ -62,6 +62,9 @@ class DatosSerie(models.Model):
     cantidad_dato = models.IntegerField(null=False, blank= False)
     leyenda_dato = models.CharField(max_length=50, null=False, blank=False)
 
+
+    def __str__(self):
+        return self.leyenda_dato
     #class Meta:
      #   db_table = 'datos_serie'
 
